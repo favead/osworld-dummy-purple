@@ -24,20 +24,20 @@ def main():
     # See: https://a2a-protocol.org/latest/tutorials/python/3-agent-skills-and-card/
     
     skill = AgentSkill(
-        id="",
-        name="",
-        description="",
-        tags=[],
-        examples=[]
+        id="use_computer",
+        name="Use Computer",
+        description="Does something on a computer as requested",
+        tags=["osworld", "desktop", "automation"],
+        examples=['Append "<br/>" to the end of each line in "1\\n2\\n3" and save in output.txt']
     )
 
     agent_card = AgentCard(
-        name="",
-        description="",
+        name="OSWorld Dummy Agent",
+        description="Always does nothing. Expressed in pyautogui action space.",
         url=args.card_url or f"http://{args.host}:{args.port}/",
         version='1.0.0',
-        default_input_modes=['text'],
-        default_output_modes=['text'],
+        default_input_modes=['text', 'file', 'data'],
+        default_output_modes=['text', 'data'],
         capabilities=AgentCapabilities(streaming=True),
         skills=[skill]
     )

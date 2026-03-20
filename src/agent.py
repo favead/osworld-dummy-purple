@@ -27,28 +27,36 @@ class Agent:
         await updater.update_status(
             TaskState.working, new_agent_text_message("Thinking...")
         )
-
+        # Unpack parts sent by A2AClientAgent
         instruction = ""
-        for part in message.parts:
-            if isinstance(part.root, TextPart):
-                instruction = part.root.text
-                print(f"instruction: {instruction}")
-            elif isinstance(part.root, FilePart):
-                file = part.root.file
-                if isinstance(file, FileWithBytes):
-                    raw = base64.b64decode(file.bytes)
-                    print(f"  obs[screenshot]: {len(raw)} bytes")
-            elif isinstance(part.root, DataPart):
-                for key, val in part.root.data.items():
-                    print(f"  obs[{key}]: {val!r}")
+        obs: dict = {}
+        env_config: dict = {}
 
-        llm_response = "dummy agent doing nothing"
+        for part in message.parts:
+            root = part.root
+            if isinstance(root, TextPart):
+                instruction = root.text
+                print(f"instruction: {instruction}")
+            elif isinstance(root, FilePart):
+                if isinstance(root.file, FileWithBytes):
+                    obs["screenshot"] = base64.b64decode(root.file.bytes)
+                    print(f"  obs[screenshot]: {len(obs['screenshot'])} bytes")
+            elif isinstance(root, DataPart):
+                if "env_config" in root.data:
+                    env_config = root.data["env_config"]
+                    print(f"env_config: {env_config!r}")
+                else:
+                    obs.update(root.data)
+                    for key, val in root.data.items():
+                        print(f"  obs[{key}]: {val!r}")
+
+        response = "dummy agent doing nothing"
         actions = ["DONE"]
 
         await updater.add_artifact(
             parts=[
-                Part(root=TextPart(text=llm_response)),
+                Part(root=TextPart(text=response)),
                 Part(root=DataPart(data={"actions": actions})),
             ],
-            name="Response",
+            name="prediction",
         )

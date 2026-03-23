@@ -6,6 +6,7 @@
   config_schema: {
     type: "object",
     properties: {
+      max_contexts: { type: "integer" },
     },
     required: [],
     additionalProperties: false,
@@ -24,6 +25,7 @@
 
     // TODO: Pass config values as environment variables
     env: {
+      MAX_CONTEXTS: "${config.max_contexts}",
       PYTHONUNBUFFERED: "1",
     },
 

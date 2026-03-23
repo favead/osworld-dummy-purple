@@ -6,7 +6,7 @@
   config_schema: {
     type: "object",
     properties: {
-      max_contexts: { type: "integer" },
+      max_contexts: { type: "integer", default: 5 },
     },
     required: [],
     additionalProperties: false,

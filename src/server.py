@@ -34,8 +34,8 @@ def main():
     )
 
     agent_card = AgentCard(
-        name="OSWorld Dummy Agent",
-        description="Always does nothing. Expressed in pyautogui action space.",
+        name="favead OSWorld Dummy Agent",
+        description="OSWorld dummy agent by favead. Always does nothing, expressed in pyautogui action space.",
         url=args.card_url or f"http://{args.host}:{args.port}/",
         version='1.0.0',
         default_input_modes=['text', 'file', 'data'],
